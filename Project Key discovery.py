@@ -69,8 +69,17 @@ def char_to_num(x):  # Converting characters into numbers
     return ord(x) - 65
 
 
+def pad_plaintext(plaintext, block_size):
+    while len(plaintext) % block_size != 0:
+        plaintext += 'X'
+    return plaintext
+
+
 plaintext = str(input())
 ciphertext = str(input())
+
+# Ensure plaintext length is a multiple of 9
+plaintext = pad_plaintext(plaintext, 9)
 
 l = len(plaintext)
 m = len(ciphertext)
@@ -89,6 +98,7 @@ for i in range(m // 3):
 Plaintext_Matrix = list(map(list, zip(*Plaintext_Matrix)))  # Transpose plaintext matrix to fit multiplication
 Key_Matrix = multiply_matrices(Ciphertext_Matrix, inverse(Plaintext_Matrix))
 
-print("Key matrix:")
+print("Key:", end="")
 for row in Key_Matrix:
-    print(" ".join(chr(int(num) + ord('A')) for num in row))
+    for i in range(3):
+        print(chr(int(row[i]) + ord('A')), end="")
